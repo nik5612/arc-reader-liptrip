@@ -1,9 +1,16 @@
-FILES=main.c arc.c dsc.c cbg.c bse.c decrypt.c write.c
-OPTS=-Wall -ansi -pedantic -Wno-unused-result -O2
-LIBS=-lpng12
+CC = gcc
+CFLAGS = -Wall -O2
+LDFLAGS = -lpng
 
-all:
-	gcc -o ethornell $(OPTS) $(FILES) $(LIBS)
+OBJS = arc.o dsc.o cbg.o bse.o decrypt.o write.o
 
-debug:
-	gcc -g -o ethornelld $(OPTS) $(FILES) $(LIBS)
+all: ethornell
+
+ethornell: main.c $(OBJS)
+	$(CC) $(CFLAGS) -o $@ main.c $(OBJS) $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+clean:
+	rm -f ethornell *.o
